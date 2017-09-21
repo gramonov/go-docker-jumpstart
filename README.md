@@ -6,7 +6,7 @@ Includes:
 
 - Dependency management with `dep`
 - Live reload with `realize`
-- Development and production ready _Dockerfile_s
+- Development and production ready *Dockerfile*s
 
 ## Editor config
 
