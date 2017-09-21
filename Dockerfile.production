@@ -1,0 +1,25 @@
+# Multi-stage production build
+
+# Build golang app
+FROM golang:1.9.0-alpine3.6 as builder
+MAINTAINER Georgy Ramonov <georgy.ramonov@gmail.com>
+
+# We only need the dependency manager
+RUN apk update && apk add git
+RUN go get github.com/golang/dep/cmd/dep
+
+# Copy the rest of the files, install dependencies, and build the app
+WORKDIR /go/src/app
+COPY . /go/src/app
+RUN dep ensure
+RUN go build
+
+# Image using built binary
+FROM alpine:3.6
+
+# Copy bundled resources from the builder step
+WORKDIR /
+COPY --from=builder /go/src/app/app /usr/bin/mycoolapp
+ENV APP_PORT=80
+EXPOSE $APP_PORT
+CMD ["mycoolapp"]
