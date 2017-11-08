@@ -13,9 +13,8 @@ RUN go get github.com/golang/dep/cmd/dep
 # separately because dep needs existing code to ensure proper sync.
 WORKDIR /go/src/app
 COPY . /go/src/app
-RUN dep ensure
 
 # Start realize watcher
 ENV APP_PORT=80
 EXPOSE $APP_PORT
-CMD ["realize", "run"]
+CMD ["sh", "-c", "dep ensure && realize start"]
